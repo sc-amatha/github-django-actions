@@ -25,7 +25,7 @@ SECRET_KEY = 'cymy5=2_u5^w8p^tspa#-aq)km1@5&jah7v9(r4eij-v1@yiu%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['16.170.140.170']
 
 
 # Application definition
@@ -81,18 +81,18 @@ When we deploy to cloud the else block will work as we won't be having GITHUB_WO
 That time the db config we use DB_USER, DB_NAME, DB_PASSWORD, DB_HOST and DB_PASSWORD
 which we will set in repository secret to be used in our deployment.
 '''
-if os.getenv('GITHUB_WORKFLOW'):
-    DATABASES = {
+#if os.getenv('GITHUB_WORKFLOW'):
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'github-actions',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
+            'NAME': 'githubactions',
+            'USER': 'ubuntu',
+            'PASSWORD': 'ubuntu1111',
             'HOST': 'localhost',
             'PORT': '5432'
         }
     }
-else:
+'''else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -103,7 +103,7 @@ else:
             'PORT': os.getenv('DB_PORT')
         }
     }
-
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
