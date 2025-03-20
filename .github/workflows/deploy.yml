@@ -77,12 +77,11 @@ jobs:
 
       - name: Setup SSH Key
         run: |
-          sudo chmod -R 700 ~
           mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 13.53.113.230 >> ~/.ssh/known_hosts
+          #chmod 700 ~/.ssh
+          #echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          #chmod 600 ~/.ssh/id_rsa
+          #ssh-keyscan -H 13.53.113.230 >> ~/.ssh/known_hosts
 
       - name: Deploy to AWS EC2
         run: |
