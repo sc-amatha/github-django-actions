@@ -17,13 +17,13 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: ubuntu
-          POSTGRES_PASSWORD: ubuntu1111
-          POSTGRES_DB: githubactions
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U ubuntu -d githubactions"
+          --health-cmd "pg_isready -U ${{ secrets.POSTGRES_USER }} -d ${{ secrets.POSTGRES_DB }}"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -45,21 +45,21 @@ jobs:
 
       - name: Run migrations
         env:
-          DATABASE_URL: postgres://ubuntu:ubuntu1111@localhost:5432/githubactions
+          DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
         run: |
           source venv/bin/activate
           python manage.py migrate
 
       - name: Collect static files
         env:
-          DATABASE_URL: postgres://ubuntu:ubuntu1111@localhost:5432/githubactions
+          DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
         run: |
           source venv/bin/activate
           python manage.py collectstatic --noinput
 
       - name: Run tests
         env:
-          DATABASE_URL: postgres://ubuntu:ubuntu1111@localhost:5432/githubactions
+          DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
         run: |
           source venv/bin/activate
           python manage.py test
