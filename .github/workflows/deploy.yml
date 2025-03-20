@@ -3,28 +3,69 @@ name: CI/CD Pipeline to AWS
 on:
   push:
     branches:
-      - master  # Trigger on push to 'main' branch
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: ubuntu
+          POSTGRES_PASSWORD: ubuntu1111
+          POSTGRES_DB: githubactions
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ubuntu -d githubactions"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: 3.12
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
+          python -m venv venv
+          source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Run Tests
+      - name: Lint with flake8
         run: |
+          source venv/bin/activate
+          pip install flake8
+          flake8 .
+
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgres://ubuntu:ubuntu1111@localhost:5432/githubactions
+        run: |
+          source venv/bin/activate
+          python manage.py migrate
+
+      - name: Collect static files
+        env:
+          DATABASE_URL: postgres://ubuntu:ubuntu1111@localhost:5432/githubactions
+        run: |
+          source venv/bin/activate
+          python manage.py collectstatic --noinput
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgres://ubuntu:ubuntu1111@localhost:5432/githubactions
+        run: |
+          source venv/bin/activate
           python manage.py test
+
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
