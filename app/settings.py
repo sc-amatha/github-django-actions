@@ -142,3 +142,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+import os
+
+# Define where collected static files will be stored
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# Ensure Django collects static files from these locations
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "app/static"),  # If you have a separate "static" folder in your project
+]
