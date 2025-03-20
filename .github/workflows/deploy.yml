@@ -87,9 +87,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 13.53.113.230 >> ~/.ssh/known_hosts
+
       - name: Deploy to AWS EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@13.53.113.230 '
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@13.53.113.230 '
           cd /home/ubuntu/github-django-actions &&
           git pull origin master &&
           source venv/bin/activate &&
