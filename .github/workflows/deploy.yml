@@ -79,7 +79,7 @@ jobs:
 
       - name: Deploy to AWS EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@13.53.113.230 << 'EOF'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{secrets.EC2_HOST}} << 'EOF'
           cd /home/ubuntu/github-django-actions &&
           git pull origin master &&
           source venv/bin/activate &&
