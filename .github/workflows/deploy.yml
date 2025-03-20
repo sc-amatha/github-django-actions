@@ -32,9 +32,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Debug Environment Variables
-        run: env | sort
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -80,11 +77,6 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Add Server to Known Hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H 13.53.113.230 >> ~/.ssh/known_hosts
 
       - name: Deploy to AWS EC2
         run: |
