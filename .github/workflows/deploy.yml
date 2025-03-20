@@ -30,15 +30,19 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      
+
       - name: Debug Environment Variables
         run: env | sort
 
       - name: Debug AWS Keys
-        run: echo "AWS Access Key: ***${{ secrets.AWS_ACCESS_KEY_ID}}***"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        run: echo "AWS Access Key: ***${AWS_ACCESS_KEY_ID}***"
 
       - name: Debug AWS Region
-        run: echo "AWS Region Key: ***${{ secrets.AWS_REGION }}***"
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: echo "AWS Region Key: ***${AWS_REGION }***"
 
 
       - name: Set up Python
