@@ -24,7 +24,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    bat "./${VENV_DIR}/bin/pip install -r requirements.txt"
+                    bat "${VENV_DIR}\\Scripts\\pip install -r requirements.txt"
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    bat "./${VENV_DIR}/bin/python -m pytest tests/" // Adjust test path as needed
+                    bat "${VENV_DIR}\\bin\\python -m pytest tests/" // Adjust test path as needed
                 }
             }
         }
