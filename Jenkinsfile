@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         VENV_DIR = "venv"
-        PYTHON = "python"
+        PYTHON_PATH = "C:\Users\Aman Thakur\AppData\Local\Programs\Python\Python313\python.exe"
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
         stage('Set Up Python') {
             steps {
                 script {
-                    bat "${PYTHON} -m venv ${VENV_DIR}"
+                    bat "${PYTHON_PATH} -m venv ${VENV_DIR}"
                 }
             }
         }
@@ -49,5 +49,5 @@ pipeline {
             echo 'Tests failed! Check logs for details.'
         }
     }
-    
+
 }
