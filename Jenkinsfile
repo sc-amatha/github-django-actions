@@ -16,7 +16,7 @@ pipeline {
         stage('Set Up Python') {
             steps {
                 script {
-                    sh "${PYTHON} -m venv ${VENV_DIR}"
+                    bat "${PYTHON} -m venv ${VENV_DIR}"
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh "./${VENV_DIR}/bin/pip install -r requirements.txt"
+                    bat "./${VENV_DIR}/bin/pip install -r requirements.txt"
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    sh "./${VENV_DIR}/bin/python -m pytest tests/" // Adjust test path as needed
+                    bat "./${VENV_DIR}/bin/python -m pytest tests/" // Adjust test path as needed
                 }
             }
         }
